@@ -11,6 +11,10 @@ export const Contacts = () => {
 		showModal: false
 	});
 
+	useEffect(() => {
+		actions.getContactList();
+	}, []);
+
 	return (
 		<div className="container">
 			<div>

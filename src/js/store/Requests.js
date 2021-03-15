@@ -27,12 +27,10 @@ export const deleteRequest = {
 };
 
 export const requestConfig = (method, body) => {
-	const config = {
-		method,
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body
+	const requestOptions = {
+		method: method,
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body)
 	};
-	return config;
+	return requestOptions;
 };

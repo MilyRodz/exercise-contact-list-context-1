@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Context } from "../store/appContext";
@@ -7,6 +8,7 @@ import { Context } from "../store/appContext";
 export const AddContact = () => {
 	const { store, actions } = useContext(Context);
 	const params = useParams();
+	let history = useHistory();
 
 	const [data, setData] = useState({
 		full_name: "",
@@ -17,10 +19,15 @@ export const AddContact = () => {
 	});
 
 	const handleClickSubmit = () => {
-		actions.addNewContact(data);
+		if (params.id) {
+			const isUpdated = actions.updateContact(params.id, data);
+			if (isUpdated) history.push("/");
+		} else {
+			actions.addNewContact(data);
+		}
 	};
 
-	const handle = e => {
+	const handleChangeText = e => {
 		const newData = { ...data };
 		console.log(newData);
 		newData[e.target.id] = e.target.value;
@@ -34,10 +41,19 @@ export const AddContact = () => {
 		}
 	}, []);
 
+	useEffect(
+		() => {
+			if (store.contactDetail) {
+				setData(store.contactDetail);
+			}
+		},
+		[store.contactDetail]
+	);
+
 	return (
 		<div className="container">
 			<div>
-				<h1 className="text-center mt-5">{params.id ? "Edit" : "Add"} a new contact</h1>
+				<h1 className="text-center mt-5">{params.id ? "Edit contact" : "Add  a new contact"}</h1>
 				<form>
 					<div className="form-group">
 						{/* <label>{store.contactDetail.full_name ? store.contactDetail.full_name : ""}</label> */}
@@ -47,7 +63,7 @@ export const AddContact = () => {
 							className="form-control"
 							placeholder="Full Name"
 							id="full_name"
-							onChange={e => handle(e)}
+							onChange={e => handleChangeText(e)}
 							value={data.full_name}
 						/>
 					</div>
@@ -58,7 +74,7 @@ export const AddContact = () => {
 							className="form-control"
 							placeholder="Enter email"
 							id="email"
-							onChange={e => handle(e)}
+							onChange={e => handleChangeText(e)}
 							value={data.email}
 						/>
 					</div>
@@ -69,7 +85,7 @@ export const AddContact = () => {
 							className="form-control"
 							placeholder="Enter phone"
 							id="phone"
-							onChange={e => handle(e)}
+							onChange={e => handleChangeText(e)}
 							value={data.phone}
 						/>
 					</div>
@@ -80,7 +96,7 @@ export const AddContact = () => {
 							className="form-control"
 							placeholder="Enter address"
 							id="address"
-							onChange={e => handle(e)}
+							onChange={e => handleChangeText(e)}
 							value={data.address}
 						/>
 					</div>
