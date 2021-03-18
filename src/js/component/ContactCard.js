@@ -7,7 +7,20 @@ import MikePhoto from "../../img/m101.jpg";
 export const ContactCard = ({ onDelete, itemCard }) => {
 	const [state, setState] = useState({
 		//initialize state here
+		contactList: []
 	});
+
+	// const updateList = key => {
+	// 	setState({
+	// 		...state,
+	// 		[key]: item.id
+	// 	});
+	// };
+
+	// const deleteContact = () => {
+	// 	const updateContactList = contact.contactList.filter(value => value.id !== id);
+	// 	updateList(updateContactList);
+	// };
 
 	return (
 		<li className="list-group-item">

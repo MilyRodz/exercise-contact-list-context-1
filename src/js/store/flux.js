@@ -37,6 +37,11 @@ const getState = ({ getStore, setStore }) => {
 					return true;
 				}
 				return false;
+			},
+			deleteContact: async id => {
+				const response = await fetch(`https://assets.breatheco.de/apis/fake/contact/${id}`, conf.deleteRequest);
+				const json = await response.json();
+				setStore({ contactDetail: json });
 			}
 
 			// Remember to use the scope: scope.state.store & scope.setState()
